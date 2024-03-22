@@ -1,0 +1,49 @@
+delimiter 结束符
+
+create procedure 存储过程名(in|out|inout 参数名称 参数数据类型)
+     begin
+     过程体
+    end
+
+call 存储过程名(实参列表)
+
+ 例如：
+
+delimiter #
+create procedure xscj(in score float(5,1))
+     begin
+    select * from 成绩表 where 成绩>=score;
+     end #
+ call xscj(65)#
+
+例如：
+delimiter #
+create procedure xscjcx(in xh char(6))
+     begin
+     select 姓名,学生表.学号,课程名,成绩 from 学生表 join 成绩表 on 学生表.学号=成绩表.学号 join 课程表 on 成绩表.课程编号= 课程表.课程编号 where 学生表.学号=xh;
+     end#
+
+call xscjcx(001)#
+
+例如：
+delimiter #
+create procedure xscjcx1(in xh char(6),in kcbh int,out cj float(5,1))
+ begin
+ select 成绩 into cj from 成绩表 where 学号=xh and 课程编号=kcbh;
+ end#
+ 
+call xscjcx1('001',2,@cj)#
+
+例如:
+delimiter #
+create procedure xscjcx2(in xh char(6),in kcbh int)
+    begin
+    declare cj float(5,1);
+    select 成绩 into cj from 成绩表 where 学号=xh and 课程编号=kcbh;
+    select cj;
+    end#
+call xscjcx2('001',2)#
+
+存储过程练习：
+创建存储过程，完成输入学生姓名后，查询出学生对应的基本信息
+创建存储过程，输入课程名后，查询出课程对应的成绩信息
